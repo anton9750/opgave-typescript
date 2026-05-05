@@ -1,0 +1,14 @@
+@import "tailwindcss";
+
+body {
+  background-color: #0f172a;
+  color: white;
+  min-height: 100vh;
+}
+
+#app {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 2rem 1rem;
+}
