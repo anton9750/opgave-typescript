@@ -72,7 +72,7 @@ export const createColorWheel = (): HTMLElement => {
       if (pixel[3] !== 0) {
         selectedColor = `rgb(${pixel[0]}, ${pixel[1]}, ${pixel[2]})`;
         
-        // Opdater vores preview boks
+        // Opdater min preview boks
         preview.style.backgroundColor = selectedColor;
         previewText.textContent = `RGB(${pixel[0]}, ${pixel[1]}, ${pixel[2]})`;
       }

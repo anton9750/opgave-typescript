@@ -1,7 +1,7 @@
 import './style.css';
 import { gameController } from './controllers/gameController';
 import { createScoreBoard } from './components/scoreboard';
-import { createColorWheel } from './components/colorWheel'; // 🌟 Importér her
+import { createColorWheel } from './components/colorWheel'; 
 import { render } from './utils/dom';
 
 const startApp = () => {
