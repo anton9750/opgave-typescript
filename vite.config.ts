@@ -6,3 +6,5 @@ export default defineConfig({
     tailwindcss(),
   ],
 });
+
+base: '/opgave-typescript/'
