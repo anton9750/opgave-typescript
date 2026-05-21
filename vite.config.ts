@@ -5,6 +5,5 @@ export default defineConfig({
   plugins: [
     tailwindcss(),
   ],
+  base: './',        // ← Simple relative base (this is what you want)
 });
-
-base: '/opgave-typescript/'
