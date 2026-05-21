@@ -9,7 +9,7 @@ export const gameController = {
   initGame: (): HTMLElement => {
     gameModel.reset();
     
-    // 🌟 SPREAD OPERATOR: Kopierer kortene over i en lokal variabel (ligesom i modellen)
+    //  SPREAD 
     const cards = [...gameModel.getList()]; 
     console.log(`📊 Spillet starter med ${cards.length} unikke billeder`);
 
@@ -21,8 +21,8 @@ export const gameController = {
 let unflipTimeoutId: number | null = null;
 
 /**
- * Håndterer det vigtige klik-event, hver gang en spiller trykker på et kort.
- * 🌟 ASYNC: Funktionen er nu asynkron, så jeg kan "awainte" kort-animationer bagefter!
+ 
+ *ASYNC:
  */
 async function handleCardClick(innerCard: HTMLElement) {
   // TJEK A: Start timer ved første klik
@@ -50,20 +50,20 @@ async function handleCardClick(innerCard: HTMLElement) {
 
   if (gameModel.flippedCards.length === 2) {
     gameModel.turns++;
-    // 🌟 AWAIT: Vi venter på, at checkForMatch() har tjekket kortene færdig asynkront
+    // 🌟 AWAIT:
     await checkForMatch();
   }
 }
 
 /**
- * Undersøger om de to aktuelt vendte kort gemmer på den samme karakter.
- * 🌟 ASYNC: Returnerer et Promise automatisk, fordi den er async
+ * 
+ * 🌟 ASYNC
  */
 async function checkForMatch() {
   const [card1, card2] = gameModel.flippedCards;
   const isMatch = card1.dataset.id === card2.dataset.id;
 
-  // 🌟 TERNARY OPERATOR & AWAIT: Hvis match -> kør disable, ellers -> AWAIT unflipCards
+  // Ternary
   isMatch 
     ? disableCards(card1, card2) 
     : await unflipCards(card1, card2);
@@ -84,17 +84,17 @@ function disableCards(card1: HTMLElement, card2: HTMLElement) {
     
     // 🌟 PROMISE-BASERET TIMEOUT: Venter 500ms før alert vises uden grimme indlejrede callbacks
     delay(500).then(() => {
-      alert(`🎉 SEJR! 🎉\n\n⏱️ Tid: ${formatTime(gameModel.secondsElapsed)}\n🎯 Antal vendinger: ${gameModel.turns}\n💥 Totale klik: ${gameModel.clicks}`);
+      alert(`SEJR! \n\n⏱ Tid: ${formatTime(gameModel.secondsElapsed)}\n Antal vendinger: ${gameModel.turns}\n Totale klik: ${gameModel.clicks}`);
     });
   }
 }
 
 /**
  * Vender de to forkerte kort tilbage til bagsiden.
- * 🌟 PROMISE & ASYNC: Erstatter den gamle setTimeout-callback med et rent Promise-flow!
+ * 🌟 PROMISE
  */
 function unflipCards(card1: HTMLElement, card2: HTMLElement): Promise<void> {
-  // Vi gemmer en reference, så forceUnflip stadig kan afbryde hvis nødvendigt
+  // jeg gemmer en reference, så forceUnflip stadig kan afbryde hvis nødvendigt
   return new Promise((resolve) => {
     unflipTimeoutId = window.setTimeout(() => {
       card1.classList.remove("[transform:rotateY(180deg)]");
@@ -104,7 +104,7 @@ function unflipCards(card1: HTMLElement, card2: HTMLElement): Promise<void> {
         gameModel.flippedCards = [];
       }
       unflipTimeoutId = null;
-      resolve(); // 🌟 Fortæller controlleren, at nu er animationen færdig!
+      resolve(); //  Fortæller controlleren, at nu er animationen færdig!
     }, 1000);
   });
 }
@@ -118,7 +118,7 @@ function forceUnflip() {
     unflipTimeoutId = null;
   }
   
-  // 🌟 SPREAD OPERATOR & FOREACH: Laver en hurtig kopi af arrayet og nulstiller kortene
+  // 🌟 SPREAD 
   [...gameModel.flippedCards].forEach(card => {
     card.classList.remove("[transform:rotateY(180deg)]");
   });
@@ -129,7 +129,7 @@ function forceUnflip() {
 
 
 /**
- * 🌟 HJÆLPE-PROMISE (Delay): Gør det muligt at pause koden asynkront
+ *  HJÆLPE-PROMISE (Delay): Gør det muligt at pause koden asynkront
  */
 const delay = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));
 
