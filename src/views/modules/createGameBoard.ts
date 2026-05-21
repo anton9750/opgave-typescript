@@ -1,22 +1,44 @@
-import { createElement } from "../atoms/index";
+import { createElement } from "../atoms";
 import { createCardElement } from "../atoms/cardElement";
+import { gridController } from "../../controllers/gridController";
+import { gridModel } from "../../models/gridModel";     // ← Added this import
 import type { Goal } from "../../types/goal";
 
 export const createGameBoard = (originalCards: Goal[], onCardClick: (el: HTMLElement) => void): HTMLElement => {
   
-  let allCards = [...originalCards, ...originalCards];
-  allCards = allCards.sort(() => Math.random() - 0.5);
+  const allCards = [...originalCards, ...originalCards].sort(() => Math.random() - 0.5);
 
-  const board = createElement(
-    "div",
-    "grid grid-cols-5 gap-2 justify-center mx-auto p-4 max-w-[560px] bg-slate-800/30 rounded-3xl shadow-2xl"
-  );
+  const boardContainer = createElement("div", "flex flex-col items-center gap-6");
 
-  console.log(`🎴 Opretter ${allCards.length} kort`);
+  let currentBoard: HTMLElement | null = null;
 
-  allCards.forEach(card => {
-    board.appendChild(createCardElement(card, onCardClick));
+  const createBoard = (cols: number) => {
+    if (currentBoard) currentBoard.remove();
+
+    currentBoard = createElement(
+      "div",
+      `grid gap-3 justify-center mx-auto p-4 bg-slate-800/30 rounded-3xl shadow-2xl`
+    );
+    
+    currentBoard.style.gridTemplateColumns = `repeat(${cols}, minmax(0, 1fr))`;
+    
+    const maxWidth = cols === 5 ? "560px" : cols === 8 ? "720px" : "960px";
+    currentBoard.style.maxWidth = maxWidth;
+
+    allCards.forEach(card => {
+      currentBoard!.appendChild(createCardElement(card, onCardClick));
+    });
+
+    boardContainer.appendChild(currentBoard);
+  };
+
+  // Grid selector from controller
+  const selector = gridController.createGridSelector((newCols) => {
+    createBoard(newCols);
   });
 
-  return board;
+  boardContainer.appendChild(selector);
+  createBoard(gridModel.currentCols);   // ← Now it knows gridModel
+
+  return boardContainer;
 };
